@@ -1,0 +1,28 @@
+{
+  "data": [
+    {
+      "studentId": 1,
+      "studentName": "Alice",
+      "studentImageUrl": "https://placehold.it/300x200",
+      "studentCountryImageUrl": "https://placehold.it/200x133"
+    },
+    {
+      "studentId": 2,
+      "studentName": "Bob",
+      "studentImageUrl": "https://placehold.it/300x200",
+      "studentCountryImageUrl": "https://placehold.it/200x133"
+    },
+    {
+      "studentId": 3,
+      "studentName": "Carol",
+      "studentImageUrl": "https://placehold.it/300x200",
+      "studentCountryImageUrl": "https://placehold.it/200x133"
+    },
+    {
+      "studentId": 4,
+      "studentName": "Dan",
+      "studentImageUrl": "https://placehold.it/300x200",
+      "studentCountryImageUrl": "https://placehold.it/200x133"
+    }
+  ]
+}
