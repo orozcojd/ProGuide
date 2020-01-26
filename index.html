@@ -188,10 +188,11 @@
       await this.fetchCourses()
       await this.fetchGrades()
       await this.syncMapStudents()
+      await this.setLoading(false)
     },
     methods: {
       ...mapActions(['fetchStudents','fetchCourses', 'fetchGrades',
-      'syncMapStudents']),
+      'syncMapStudents', 'setLoading']),
       letterGrade(score) {
         let res = 'F'
         if(score >= 90) res = 'A'
@@ -218,7 +219,7 @@
       </div>
     `,
     computed: {
-      ...mapState(['students']),
+      ...mapState(['students', 'loading']),
     },
     data() {
       return {
@@ -228,8 +229,10 @@
     methods: {
       ...mapActions(['selectedStudent']),
       selectCard(id, i) {
-        this.selectedStudent(i)
-        this.index = i
+        if(!this.loading) {
+          this.selectedStudent(i)
+          this.index = i
+        }
       },
       isSelected(i) {
         return this.index === i

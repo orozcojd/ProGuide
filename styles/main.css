@@ -163,7 +163,7 @@ body {
   background: #C4C4C4;
   margin-right: 19px;
   cursor: pointer;
-  transition:all 1s ease;
+  transition:all .5s ease-out;
 }
 .card__bottom__indicators__block--selected {
   background: #141417;
