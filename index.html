@@ -3,12 +3,10 @@
 <head>
   <title>Pro Guide - Report Card</title>
   <meta charset='utf-8' />
-  <link rel="shortcut icon" href="">
   <link rel="stylesheet" type="text/css" href="styles/main.css">
   <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/vuex"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <meta name="viewport" content="width=device-width,
     initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui"
   >
@@ -148,7 +146,7 @@
             <img src="images/profile_body.svg" alt="">
           </div>
         </div>
-        <div 
+        <div
           v-else
           class="card__profile card__profile__img"
         >
@@ -160,7 +158,8 @@
             Exam Results
           </div>
           <div class="card__det__student__wrap">
-            <div class="card__det__student card__det__student--dark card__det--lg card__det--poppins">
+            <div class="card__det__student card__det__student--dark
+              card__det--lg card__det--poppins">
               {{ student.studentName }}
             </div>
             <div class="card__det__student__country__img">
@@ -177,9 +176,9 @@
               </div>
             </div>
             <div class="card__det__hl"></div>
-            <div class="card__det__inner"> 
+            <div class="card__det__inner">
               <div class="card__det__rep">
-                  <div 
+                  <div
                     class="card__det__rep__courses"
                     v-for="(course, index) in student.courses"
                   >
@@ -233,8 +232,8 @@
   })
   Vue.component('page-indicator', {
     template: `<div class="card__bottom">
-        <div 
-          class="card__bottom__indicators__block" 
+        <div
+          class="card__bottom__indicators__block"
           v-for="(student, i) in students"
           :key="i"
           v-on:click="selectCard(student.studentId, i)"
@@ -418,7 +417,7 @@ const gradesArr = [
       "courseId": 5,
       "courseName": "Psychology"
     }
-  ] 
+  ]
   </script>
   </body>
   </html>
