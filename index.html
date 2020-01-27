@@ -24,9 +24,35 @@
 
   <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
   <script type="module">
-      // import * as students from './data/data'
       let mapState = Vuex.mapState
       let mapActions = Vuex.mapActions
+
+      /* converts an array into a map given an array and id use as key */
+      const arrayToMap = (id, arr) => {
+        let map = {}
+        for(const o of arr) {
+          map[o[id]] = o
+        }
+        return map
+      }
+      /* maps the course arr and grades arr into one array by ID */
+      const mapGradesToCourse = (gradesArr, courseArr) => {
+        const courseObj = arrayToMap('courseId', courseArr)
+        const mappedgrades = gradesArr.map(g => ({
+          ...g,
+          ...courseObj[g.courseId]
+        }))
+        return mappedgrades
+      }
+      /* converts array of grades into object, key as studentId grades array as values */
+      const idToObjList = (gradesArr) => {
+        let map = {}
+        for(const g of gradesArr) {
+          if(!map[g.studentId]) map[g.studentId] = [g]
+          else map[g.studentId].push(g)
+        }
+        return map
+      }
       const store = new Vuex.Store({
     state: {
       students: [],
@@ -89,19 +115,12 @@
         state.grades = grades
       },
       mapStudents(state) {
+        const grades = mapGradesToCourse(state.grades, state.courses)
+        const mGradesObj = idToObjList(grades)
         state.report = state.students.map(s => {
-        const courses = state.grades.map(g => {
-          const fixedGrade = Number(g.grade).toFixed(1)
-          g.grade = fixedGrade
-          return {
-          ...g,
-          ...coursesArr.find(c => c.courseId === g.courseId)
-        }
-        })
         return {
           ...s,
-          courses: courses
-          .filter(g => g.studentId === s.studentId)
+          courses: mGradesObj[s.studentId]
           .sort((a,b) => { return b.grade - a.grade })
           }
         })
@@ -120,8 +139,8 @@
     template: `<div>
         <div
           class="card__profile card__profile--temp"
-          v-if="student.studentImageUrl"
-        > <!-- switch to v-if=! in prod -->
+          v-if="!student.studentImageUrl"
+        >
           <div class="card__profile__top">
             <img src="images/profile_head.svg" alt="">
           </div>
@@ -131,17 +150,22 @@
         </div>
         <div 
           v-else
-          class="card__profile"
+          class="card__profile card__profile__img"
         >
-          <img src="student.studentImageUrl" alt="profile_image">
+          <img :src="student.studentImageUrl" alt="profile_image">
         </div>
         <div class="card__det">
           <div class="card__det_title card__det--poppins
           card__det--sm card__det__title--light">
             Exam Results
           </div>
-          <div class="card__det__student card__det__student--dark card__det--lg card__det--poppins">
-            {{ student.studentName }}
+          <div class="card__det__student__wrap">
+            <div class="card__det__student card__det__student--dark card__det--lg card__det--poppins">
+              {{ student.studentName }}
+            </div>
+            <div class="card__det__student__country__img">
+                <img :src="student.studentCountryImageUrl">
+            </div>
           </div>
           <div class="card__det__categ__wrapper">
             <div class="card__det__categ card__det--poppins card__det__categ--upper">
@@ -161,7 +185,8 @@
                   >
                     <div>{{ index+1 }}. {{ course.courseName }} </div>
                     <div
-                      v-bind:class="{ 'card__det__course--red':cFailed(course.grade) }"
+                      v-bind:class="{ 'card__det__course--red':cFailed(course.grade),
+                      'card__det__course--default': !cFailed(course.grade) }"
                     >
                       {{ letterGrade(course.grade) }}
                     </div>
@@ -180,7 +205,7 @@
     data() {
       return {
         loaded: false,
-        item: {}
+        item: {},
       }
     },
     async mounted() {
